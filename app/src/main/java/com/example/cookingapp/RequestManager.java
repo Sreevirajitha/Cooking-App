@@ -5,6 +5,8 @@ import android.content.Context;
 import com.example.cookingapp.Listeners.RandomRecipeListener;
 import com.example.cookingapp.Models.RandomRecipeRes;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,9 +23,9 @@ public class RequestManager {
     public RequestManager(Context context) {
         this.context = context;
     }
-    public void getRandomRecipes(RandomRecipeListener listener){
+    public void getRandomRecipes(RandomRecipeListener listener, List<String> tags){
         RandomRecipe randomRecipe = retrofit.create(RandomRecipe.class);
-        Call<RandomRecipeRes> call = randomRecipe.RandomRecipe(context.getString(R.string.api_key), "10");
+        Call<RandomRecipeRes> call = randomRecipe.RandomRecipe(context.getString(R.string.api_key), "10", tags);
         call.enqueue(new Callback<RandomRecipeRes>() {
             @Override
             public void onResponse(Call<RandomRecipeRes> call, Response<RandomRecipeRes> response) {
@@ -41,7 +43,8 @@ public class RequestManager {
         @GET("recipes/random")
         Call<RandomRecipeRes> RandomRecipe(
                 @Query("apiKey") String apiKey,
-                @Query("number") String number
+                @Query("number") String number,
+                @Query("tags") List<String> tags
         );
     }
 }
