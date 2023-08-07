@@ -3,7 +3,9 @@ package com.example.cookingapp;
 import android.content.Context;
 
 import com.example.cookingapp.Listeners.RandomRecipeListener;
+import com.example.cookingapp.Listeners.RecipeDetailsListener;
 import com.example.cookingapp.Models.RandomRecipeRes;
+import com.example.cookingapp.Models.RecipeDetailsResponse;
 
 import java.util.List;
 
@@ -13,11 +15,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public class RequestManager {
     Context context;
-    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.spoonacular.com/").addConverterFactory(GsonConverterFactory.create()).build();
+    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.spoonacular.com/").addConverterFactory(GsonConverterFactory.create()).build(); //url of the api
 
 
     public RequestManager(Context context) {
@@ -32,19 +35,32 @@ public class RequestManager {
                if(!response.isSuccessful()){listener.didError(response.message()); return;}
                listener.didFetch(response.body(), response.message());
             }
-
             @Override
-            public void onFailure(Call<RandomRecipeRes> call, Throwable t) {
-                listener.didError(t.getMessage());
+            public void onFailure(Call<RandomRecipeRes> call, Throwable t) {listener.didError(t.getMessage());}
+        });
+    }
+    public void getRecipeDetails(RecipeDetailsListener listener, int id){
+        CallRecipeDetails callRecipeDetails = retrofit.create(CallRecipeDetails.class);
+        Call<RecipeDetailsResponse> call = callRecipeDetails.callRecipeDetails(id,context.getString(R.string.api_key));
+        call.enqueue(new Callback<RecipeDetailsResponse>() {
+            @Override
+            public void onResponse(Call<RecipeDetailsResponse> call, Response<RecipeDetailsResponse> response) {
+                if(!response.isSuccessful()){listener.didError(response.message());return;}
+                listener.didFetch(response.body(), response.message());
             }
+            @Override
+            public void onFailure(Call<RecipeDetailsResponse> call, Throwable t) {listener.didError(t.getMessage());}
         });
     }
     private interface RandomRecipe{
-        @GET("recipes/random")
-        Call<RandomRecipeRes> RandomRecipe(
-                @Query("apiKey") String apiKey,
-                @Query("number") String number,
-                @Query("tags") List<String> tags
+        @GET("recipes/random") //specific url for randomrecipe
+        Call<RandomRecipeRes> RandomRecipe(@Query("apiKey") String apiKey, @Query("number") String number, @Query("tags") List<String> tags);
+    }
+    private interface CallRecipeDetails{
+        @GET("recipes/{id}/information") //specific url for a specific recipe
+        Call<RecipeDetailsResponse> callRecipeDetails(
+                @Path("id") int id,
+                @Query("apiKey") String apiKey
         );
     }
 }

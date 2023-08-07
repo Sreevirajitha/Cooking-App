@@ -1,10 +1,12 @@
 package com.example.cookingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.cookingapp.Adapters.RandomRecipeAdapter;
 import com.example.cookingapp.Listeners.RandomRecipeListener;
+import com.example.cookingapp.Listeners.RecipeClickListener;
 import com.example.cookingapp.Models.RandomRecipeRes;
 
 import java.lang.reflect.Array;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Spinner spinner;
     List<String> tags = new ArrayList<>();
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,27 +41,44 @@ public class MainActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...");
 
-        spinner = findViewById(R.id.spinner_tags);
-        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(
+        searchView = findViewById(R.id.searchView_home);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() { //set for search function
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                tags.clear();
+                tags.add(query.toLowerCase());//change to lowercase so no matter how it is typed
+                manager.getRandomRecipes(randomRecipeListener, tags);
+                dialog.show();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        spinner = findViewById(R.id.spinner_tags); //initializing spinner
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource( //creating an array adapter
                 this,
                 R.array.tags,
                 R.layout.spinner_text
         );
         arrayAdapter.setDropDownViewResource(R.layout.spinner_inner_text);
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(spinnerSelectedListener);
+        spinner.setAdapter(arrayAdapter); //attach the array adapter to spinner
+        spinner.setOnItemSelectedListener(spinnerSelectedListener);//on set listener when spinner item is selected.
 
         manager = new RequestManager(this);
     //    manager.getRandomRecipes(randomRecipeListener);
     //    dialog.show();
     }
-    private final RandomRecipeListener randomRecipeListener = new RandomRecipeListener() {
+    private final RandomRecipeListener randomRecipeListener = new RandomRecipeListener() {//function to load the menu
         @Override
         public void didFetch(RandomRecipeRes response, String message) {
             recyclerView = findViewById(R.id.recycler_view);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
-            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes);
+            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes, recipeClickListener);
             recyclerView.setAdapter(randomRecipeAdapter);
         }
 
@@ -67,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private final AdapterView.OnItemSelectedListener spinnerSelectedListener = new AdapterView.OnItemSelectedListener() {
+    private final AdapterView.OnItemSelectedListener spinnerSelectedListener = new AdapterView.OnItemSelectedListener() {//for spinner options listener
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
             tags.clear();
@@ -79,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
 
+        }
+    };
+
+    private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
+        @Override
+        public void onRecipeClicked(String id) {
+            startActivity(new Intent(MainActivity.this, RecipeActivity.class) //creating new activity
+                    .putExtra("id",id)); //passing the id done in assignment 2
         }
     };
 }
