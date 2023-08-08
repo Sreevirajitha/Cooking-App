@@ -1,5 +1,7 @@
 package com.example.cookingapp;
 
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private final RandomRecipeListener randomRecipeListener = new RandomRecipeListener() {//function to load the menu
         @Override
-        public void didFetch(RandomRecipeRes response, String message) {
+        public void didFetch(@NonNull RandomRecipeRes response, String message) {
             recyclerView = findViewById(R.id.recycler_view);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void didError(String message) {
-            Toast.makeText(MainActivity.this,message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,message + "Error: randomRecipeListener", Toast.LENGTH_SHORT).show();
         }
     };
 

@@ -4,8 +4,10 @@ import android.content.Context;
 
 import com.example.cookingapp.Listeners.RandomRecipeListener;
 import com.example.cookingapp.Listeners.RecipeDetailsListener;
+import com.example.cookingapp.Listeners.SimilarRecipesListener;
 import com.example.cookingapp.Models.RandomRecipeRes;
 import com.example.cookingapp.Models.RecipeDetailsResponse;
+import com.example.cookingapp.Models.SimilarRecipeResponse;
 
 import java.util.List;
 
@@ -52,15 +54,42 @@ public class RequestManager {
             public void onFailure(Call<RecipeDetailsResponse> call, Throwable t) {listener.didError(t.getMessage());}
         });
     }
+    public void getSimilarRecipes(SimilarRecipesListener listener, int id){
+        CallSimilarRecipes callSimilarRecipes = retrofit.create(CallSimilarRecipes.class);
+        Call<List<SimilarRecipeResponse>> call = callSimilarRecipes.callSimilarRecipe(id,"4", context.getString(R.string.api_key));
+        call.enqueue(new Callback<List<SimilarRecipeResponse>>() {
+            @Override
+            public void onResponse(Call<List<SimilarRecipeResponse>> call, Response<List<SimilarRecipeResponse>> response) {
+                if(!response.isSuccessful()){
+                    listener.didError(response.message());
+                    return;
+                }
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<List<SimilarRecipeResponse>> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
     private interface RandomRecipe{
         @GET("recipes/random") //specific url for randomrecipe
-        Call<RandomRecipeRes> RandomRecipe(@Query("apiKey") String apiKey, @Query("number") String number, @Query("tags") List<String> tags);
+        Call<RandomRecipeRes> RandomRecipe(
+                @Query("apiKey") String apiKey, @Query("number") String number, @Query("tags") List<String> tags
+        );
     }
     private interface CallRecipeDetails{
         @GET("recipes/{id}/information") //specific url for a specific recipe
         Call<RecipeDetailsResponse> callRecipeDetails(
-                @Path("id") int id,
-                @Query("apiKey") String apiKey
+                @Path("id") int id, @Query("apiKey") String apiKey
+        );
+    }
+
+    private interface CallSimilarRecipes{
+        @GET("recipes/{id}/similar") //URL for similar recipe based on Id.
+        Call<List<SimilarRecipeResponse>> callSimilarRecipe(
+                @Path("id") int id, @Query("number") String number, @Query("apiKey") String apiKey
         );
     }
 }
