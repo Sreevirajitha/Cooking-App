@@ -66,7 +66,8 @@ public class RecipeActivity extends AppCompatActivity {
             dialog.dismiss();
             textView_meal_name.setText(response.title); //title
             textView_meal_source.setText(response.sourceName);
-            textView_meal_summary.setText(response.summary); //summary
+            String plainTextSummary = response.summary.replaceAll("<[^>]+>", "");
+            textView_meal_summary.setText(plainTextSummary); //display summary without HTML tags
             Picasso.get().load(response.image).into(imageView_meal_image); //dish image
 
             //recycler_meal_ingredients.setHasFixedSize(true);
