@@ -54,6 +54,25 @@ public class RequestManager {
             public void onFailure(Call<RecipeDetailsResponse> call, Throwable t) {listener.didError(t.getMessage());}
         });
     }
+    public void getSavedRecipeDetails(RecipeDetailsListener listener, int id) {
+        CallRecipeDetails callRecipeDetails = retrofit.create(CallRecipeDetails.class);
+        Call<RecipeDetailsResponse> call = callRecipeDetails.callRecipeDetails(id, context.getString(R.string.api_key));
+        call.enqueue(new Callback<RecipeDetailsResponse>() {
+            @Override
+            public void onResponse(Call<RecipeDetailsResponse> call, Response<RecipeDetailsResponse> response) {
+                if (!response.isSuccessful()) {
+                    listener.didError(response.message());
+                    return;
+                }
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<RecipeDetailsResponse> call, Throwable t) {
+                listener.didError(t.getMessage());
+            }
+        });
+    }
     public void getSimilarRecipes(SimilarRecipesListener listener, int id){
         CallSimilarRecipes callSimilarRecipes = retrofit.create(CallSimilarRecipes.class);
         Call<List<SimilarRecipeResponse>> call = callSimilarRecipes.callSimilarRecipe(id,"4", context.getString(R.string.api_key));

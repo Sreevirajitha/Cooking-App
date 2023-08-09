@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    tools:context=".SavedRecipesActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_saved_recipes"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:title="Saved Recipes"
+        android:titleTextColor="@color/white"
+        app:titleTextColor="@color/white" />
+
+    <Button
+        android:id="@+id/button_clear_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear All"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_saved_recipes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp" />
+
+</LinearLayout>

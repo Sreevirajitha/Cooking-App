@@ -75,6 +75,25 @@ public class MainActivity extends AppCompatActivity {
     //    manager.getRandomRecipes(randomRecipeListener);
     //    dialog.show();
     }
+    private final AdapterView.OnItemSelectedListener spinnerSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            String selectedTag = adapterView.getSelectedItem().toString();
+            if (selectedTag.equals("Saved Recipes")) {
+                startActivity(new Intent(MainActivity.this, SavedRecipesActivity.class));
+            } else {
+                tags.clear();
+                tags.add(selectedTag);
+                manager.getRandomRecipes(randomRecipeListener, tags);
+                dialog.show();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
     private final RandomRecipeListener randomRecipeListener = new RandomRecipeListener() {//function to load the menu
         @Override
         public void didFetch(@NonNull RandomRecipeRes response, String message) {
@@ -88,21 +107,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void didError(String message) {
             Toast.makeText(MainActivity.this,message + "Error: randomRecipeListener", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    private final AdapterView.OnItemSelectedListener spinnerSelectedListener = new AdapterView.OnItemSelectedListener() {//for spinner options listener
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            tags.clear();
-            tags.add(adapterView.getSelectedItem().toString());
-            manager.getRandomRecipes(randomRecipeListener, tags);
-            dialog.show();
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
         }
     };
 

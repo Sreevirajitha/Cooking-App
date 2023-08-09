@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,8 +52,24 @@ public class RecipeActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading Detail Information...");
         dialog.show();
+        Button buttonSaveRecipe = findViewById(R.id.button_save_recipe);
+        buttonSaveRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveRecipeLocally(id); // Call the function to save the recipe
+            }
+        });
     }
+    private void saveRecipeLocally(int recipeId) {
+        SharedPreferences sharedPreferences = getSharedPreferences("SavedRecipes", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        // Store the recipe ID in SharedPreferences
+        editor.putBoolean(String.valueOf(recipeId), true);
+        editor.apply();
+
+        Toast.makeText(this, id+"Recipe saved!", Toast.LENGTH_SHORT).show();
+    }
     private void findViews() {
         textView_meal_name = findViewById(R.id.textView_meal_name);
         textView_meal_source = findViewById(R.id.textView_meal_source);
@@ -66,7 +85,7 @@ public class RecipeActivity extends AppCompatActivity {
             dialog.dismiss();
             textView_meal_name.setText(response.title); //title
             textView_meal_source.setText(response.sourceName);
-            String plainTextSummary = response.summary.replaceAll("<[^>]+>", "");
+            String plainTextSummary = response.summary.replaceAll("<[^>]+>", ""); //removes html tags with regex
             textView_meal_summary.setText(plainTextSummary); //display summary without HTML tags
             Picasso.get().load(response.image).into(imageView_meal_image); //dish image
 
