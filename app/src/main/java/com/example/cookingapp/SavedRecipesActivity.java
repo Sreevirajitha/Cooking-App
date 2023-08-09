@@ -59,6 +59,16 @@ public class SavedRecipesActivity extends AppCompatActivity {
                 clearAllSavedRecipes();
             }
         });
+        Button buttonHome = findViewById(R.id.button_home_saved);
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Bring the existing MainActivity to the foreground
+                Intent homeIntent = new Intent(SavedRecipesActivity.this, MainActivity.class);
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(homeIntent);
+            }
+        });
 
         List<Integer> savedRecipeIds = getSavedRecipeIds();
         fetchSavedRecipesDetails(savedRecipeIds);

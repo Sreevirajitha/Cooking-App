@@ -6,27 +6,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/white"
+    android:background="@color/pink"
     tools:context=".SavedRecipesActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_saved_recipes"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:title="Saved Recipes"
-        android:titleTextColor="@color/white"
-        app:titleTextColor="@color/white" />
+        android:background="@color/pink"
+        android:elevation="4dp">
 
-    <Button
-        android:id="@+id/button_clear_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clear All"
-        android:layout_gravity="end"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/white" />
+        <!-- Set gravity to center the title horizontally -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Saved Recipes"
+            android:textColor="@color/teal"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_saved_recipes"
@@ -34,5 +34,22 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="8dp" />
+
+    <Button
+        android:id="@+id/button_clear_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="Clear All"
+        android:textColor="@color/white" />
+    <Button
+        android:id="@+id/button_home_saved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Home"
+        android:textColor="@color/white" />
 
 </LinearLayout>

@@ -59,6 +59,16 @@ public class RecipeActivity extends AppCompatActivity {
                 saveRecipeLocally(id); // Call the function to save the recipe
             }
         });
+        Button buttonHome = findViewById(R.id.button_home);
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Bring the existing MainActivity to the foreground
+                Intent homeIntent = new Intent(RecipeActivity.this, MainActivity.class);
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(homeIntent);
+            }
+        });
     }
     private void saveRecipeLocally(int recipeId) {
         SharedPreferences sharedPreferences = getSharedPreferences("SavedRecipes", MODE_PRIVATE);
