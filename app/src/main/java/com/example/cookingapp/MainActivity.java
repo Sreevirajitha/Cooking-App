@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(spinnerSelectedListener);//on set listener when spinner item is selected.
 
         manager = new RequestManager(this);
-    //    manager.getRandomRecipes(randomRecipeListener);
-    //    dialog.show();
     }
     private final AdapterView.OnItemSelectedListener spinnerSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
