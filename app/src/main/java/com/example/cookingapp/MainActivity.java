@@ -115,4 +115,12 @@ public class MainActivity extends AppCompatActivity {
                     .putExtra("id",id)); //passing the id done in assignment 2
         }
     };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reset the spinner to the default position
+        if (spinner != null) {
+            spinner.setSelection(0); // 0 is the index of the default position
+        }
+    }
 }

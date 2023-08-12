@@ -3,6 +3,7 @@ package com.example.cookingapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.cookingapp.Adapters.IngredientsAdapter;
 import com.example.cookingapp.Adapters.SimilarRecipeAdapter;
+import com.example.cookingapp.Database.AppDatabase;
+import com.example.cookingapp.Entities.SavedRecipe;
 import com.example.cookingapp.Listeners.RecipeClickListener;
 import com.example.cookingapp.Listeners.RecipeDetailsListener;
 import com.example.cookingapp.Listeners.SimilarRecipesListener;
@@ -37,11 +40,14 @@ public class RecipeActivity extends AppCompatActivity {
     ProgressDialog dialog;
     IngredientsAdapter ingredientsAdapter; //adapter
     SimilarRecipeAdapter similarRecipeAdapter; //adapter
+    AppDatabase appDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
+        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "app_database").build(); // Added
 
         findViews();
 
@@ -52,13 +58,25 @@ public class RecipeActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading Detail Information...");
         dialog.show();
+
         Button buttonSaveRecipe = findViewById(R.id.button_save_recipe);
         buttonSaveRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveRecipeLocally(id); // Call the function to save the recipe
+                manager.getRecipeDetails(new RecipeDetailsListener() { // Fetching the recipe details again to save
+                    @Override
+                    public void didFetch(RecipeDetailsResponse response, String message) {
+                        saveRecipeLocally(response);
+                    }
+
+                    @Override
+                    public void didError(String message) {
+                        // Handle error here
+                    }
+                }, id);
             }
         });
+
         Button buttonHome = findViewById(R.id.button_home);
         buttonHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,15 +88,13 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
     }
-    private void saveRecipeLocally(int recipeId) {
-        SharedPreferences sharedPreferences = getSharedPreferences("SavedRecipes", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+    private void saveRecipeLocally(RecipeDetailsResponse recipeDetails) {
+        SavedRecipe savedRecipe = new SavedRecipe(recipeDetails.id, recipeDetails.title, recipeDetails.summary, recipeDetails.image, recipeDetails.imageType);
+        new Thread(() -> {
+            appDatabase.recipeDao().insertRecipe(savedRecipe);
+        }).start();
 
-        // Store the recipe ID in SharedPreferences
-        editor.putBoolean(String.valueOf(recipeId), true);
-        editor.apply();
-
-        Toast.makeText(this, id+"Recipe saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,  savedRecipe.image + "Recipe saved!", Toast.LENGTH_SHORT).show();
     }
     private void findViews() {
         textView_meal_name = findViewById(R.id.textView_meal_name);
