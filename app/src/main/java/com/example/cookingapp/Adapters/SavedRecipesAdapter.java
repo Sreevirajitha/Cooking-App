@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cookingapp.Entities.SavedRecipe;
+import com.example.cookingapp.Listeners.RecipeClickListener;
 import com.example.cookingapp.Models.RecipeDetailsResponse;
 import com.example.cookingapp.R;
 import com.squareup.picasso.Picasso;
@@ -21,10 +22,15 @@ import java.util.List;
 public class SavedRecipesAdapter extends RecyclerView.Adapter<SavedRecipesAdapter.RecipeViewHolder> {
 
     private List<SavedRecipe> savedRecipes;
-    private View.OnClickListener clickListener;
+    private RecipeClickListener clickListener;
 
-    public SavedRecipesAdapter() {
+    public interface RecipeClickListener {
+        void onRecipeClicked(String id);
+    }
+
+    public SavedRecipesAdapter(RecipeClickListener clickListener) {
         this.savedRecipes = new ArrayList<>();
+        this.clickListener = clickListener;
     }
 
     public void setSavedRecipes(List<SavedRecipe> recipes) {
@@ -37,10 +43,6 @@ public class SavedRecipesAdapter extends RecyclerView.Adapter<SavedRecipesAdapte
         notifyDataSetChanged();
     }
 
-    public void setClickListener(View.OnClickListener clickListener) {
-        this.clickListener = clickListener;
-    }
-
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,11 +52,16 @@ public class SavedRecipesAdapter extends RecyclerView.Adapter<SavedRecipesAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        SavedRecipe recipe = savedRecipes.get(position);
+        final SavedRecipe recipe = savedRecipes.get(position);
         holder.textViewRecipeName.setText(recipe.getName());
         Picasso.get().load(recipe.image).into(holder.imageViewRecipe);
-        holder.itemView.setTag(recipe.getId()); // Storing recipe ID in the tag for click handling
-        holder.itemView.setOnClickListener(clickListener);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onRecipeClicked(String.valueOf(recipe.getId()));
+            }
+        });
     }
 
     @Override
@@ -70,7 +77,7 @@ public class SavedRecipesAdapter extends RecyclerView.Adapter<SavedRecipesAdapte
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewRecipeName = itemView.findViewById(R.id.textViewRecipeName);
-            imageViewRecipe = itemView.findViewById(R.id.imageViewRecipe);
+            imageViewRecipe = itemView.findViewById(R.id.imageViewRecipe); // Replace with the actual ID of your ImageView
         }
     }
 }

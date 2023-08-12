@@ -45,7 +45,12 @@ public class SavedRecipesActivity extends AppCompatActivity {
 
         clearAllButton = findViewById(R.id.button_clear_all);
 
-        savedRecipesAdapter = new SavedRecipesAdapter();
+        savedRecipesAdapter = new SavedRecipesAdapter(new SavedRecipesAdapter.RecipeClickListener() {
+            @Override
+            public void onRecipeClicked(String id) {
+                startActivity(new Intent(SavedRecipesActivity.this, RecipeActivity.class).putExtra("id", id));
+            }
+        });
         recyclerViewSavedRecipes.setAdapter(savedRecipesAdapter);
 
         clearAllButton.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +73,8 @@ public class SavedRecipesActivity extends AppCompatActivity {
         // Use AsyncTask to retrieve saved recipes on a background thread
         new LoadSavedRecipesTask().execute();
     }
+
+
 
     private void clearAllSavedRecipes() {
         new ClearSavedRecipesTask().execute();
