@@ -71,7 +71,7 @@ Let's peek behind the scenes of the Cooking App:
 - `Adapters`:
   - `IngredientsAdapter.java`: Manages ingredient lists in the UI.
   - `RandomRecipeAdapter.java`: Handles random recipe display.
-  - `SavedRecipeAdapter.java`: Manages saved recipe display.
+  - `SavedRecipeAdapter.java`: Manages saved recipe display that is stored in local storage with RoomDB.
   - `SimilarRecipeAdapter.java`: Handles similar recipe suggestions.
 - `Layouts`: The XML layout files that define the app's user interface.
 
