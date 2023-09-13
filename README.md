@@ -1,6 +1,6 @@
 # Cooking App 🍳
 
-Welcome to the Cooking App! This Android application is your culinary companion, designed to elevate your cooking experience and tantalize your taste buds.
+The Cooking Application is a user-friendly mobile app that leverages the power of the Spoonacular API (https://spoonacular.com/food-api/console#Dashboard) to provide users with a delightful culinary experience. The app seamlessly integrates with the API to offer a range of features that enhance the user's cooking journey.
 
 ## Features 🍽️
 
