@@ -8,7 +8,7 @@ Hungry for a culinary adventure? You're in the right place! Our Cooking App, pow
 
 ### Check Out the App in Action
 
-Want to see how it works? Watch our demo on [YouTube](https://www.youtube.com/watch?v=83ALOBbmoWk&ab_channel=lorenzalvin). Please note that in the video, you might see loaded recipes because of an active internet connection.
+Want to see how it works? Watch my youtube demo on [YouTube](https://www.youtube.com/watch?v=83ALOBbmoWk&ab_channel=lorenzalvin). Please note that in the video, you might see loaded recipes because of an active internet connection.
 
 ## What's Cooking?
 
