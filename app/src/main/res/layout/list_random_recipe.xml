@@ -7,89 +7,109 @@
     app:cardElevation="8dp"
     android:layout_margin="8dp"
     android:id="@+id/random_list_container">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10px"
+        android:layout_marginStart="10px"
+        android:layout_marginLeft="10px"
+        android:layout_marginTop="10px"
+        android:layout_marginEnd="10px"
+        android:layout_marginRight="10px"
+        android:layout_marginBottom="10px"
         android:orientation="vertical">
+
         <TextView
+            android:id="@+id/textView_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView_title"
-            android:text="Recipe Name"
-            android:singleLine="true"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
+            android:padding="8dp"
             android:scrollHorizontally="true"
-            android:textStyle="bold"
+            android:singleLine="true"
+            android:text="Recipe Name"
             android:textColor="@color/teal"
             android:textSize="22sp"
-            android:padding="8dp"/>
+            android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/imageView_food"
-            android:scaleType="centerCrop"
-            android:layout_margin="8dp"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="200dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
                 <ImageView
-                    android:src="@drawable/ic_servings"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_servings" />
+
                 <TextView
                     android:id="@+id/textView_servings"
-                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="2 persons"
                     android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="14sp" />
             </LinearLayout>
+
             <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
                 <ImageView
-                    android:src="@drawable/ic_like"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_like" />
+
                 <TextView
                     android:id="@+id/textView_likes"
-                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="2 persons"
                     android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="14sp" />
             </LinearLayout>
+
             <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
                 <ImageView
-                    android:src="@drawable/ic_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_time" />
+
                 <TextView
                     android:id="@+id/textView_time"
-                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="2 persons"
                     android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
